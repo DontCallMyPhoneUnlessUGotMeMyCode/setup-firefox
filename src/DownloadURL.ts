@@ -1,6 +1,6 @@
-import { Platform, OS, Arch } from "./platform";
-import { LatestVersion } from "./versions";
 import { UnsupportedPlatformError } from "./errors";
+import { Arch, OS, type Platform } from "./platform";
+import { LatestVersion } from "./versions";
 
 export default interface DownloadURL {
   getURL(): string;
@@ -42,7 +42,10 @@ export class ArchiveDownloadURL implements DownloadURL {
 
   private platformPart(): string {
     const { os, arch } = this.platform;
+
     if (os === OS.MACOS && arch === Arch.AMD64) {
+      return "mac";
+    } else if (os === OS.MACOS && arch === Arch.ARM64) {
       return "mac";
     } else if (os === OS.LINUX && arch === Arch.I686) {
       return "linux-i686";
@@ -102,6 +105,8 @@ export class LatestDownloadURL implements DownloadURL {
   private platformPart(): string {
     const { os, arch } = this.platform;
     if (os === OS.MACOS && arch === Arch.AMD64) {
+      return "osx";
+    } else if (os === OS.MACOS && arch === Arch.ARM64) {
       return "osx";
     } else if (os === OS.LINUX && arch === Arch.I686) {
       return "linux";
